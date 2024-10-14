@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Speech-to-Text Sentiment Analysis</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #1e3c72, #2a69ac);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      color: orange;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 30px;
+      border-radius: 8px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    button {
+      background-color: orange;
+      color: white;
+      border: none;
+      border-radius: 50%; /* Make the button round */
+      width: 80px;
+      height: 80px;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #transcript, #sentimentAnalysis {
+      margin-top: 20px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 5px;
+      width: 100%;
+      max-width: 400px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Speech-to-Text Sentiment Analysis</h1>
+
+    <p id="transcript">Press the button and start speaking...</p>
+    <p id="sentimentAnalysis">Sentiment analysis will appear here...</p>
+
+    <button onclick="startRecognition()">🎤</button>
+  </div>
+
+  <script>
+    function startRecognition() {
+      const recognition = new webkitSpeechRecognition();
+      recognition.lang = 'en-US';
+
+      recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+
+        analyzeSentiment(transcript);
+      };
+
+      recognition.start();
+    }
+
+    function analyzeSentiment(transcript) {
+      fetch('/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: transcript }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        const sentimentScore = data.score;
+        const sentimentLabel = sentimentScore > 0 ? 'Positive' : sentimentScore < 0 ? 'Negative' : 'Neutral';
+        const sentimentColor = sentimentScore > 0 ? 'green' : sentimentScore < 0 ? 'red' : 'blue';
+        
+        // Set color for both the transcript and sentiment analysis based on sentiment tone
+        document.getElementById('transcript').innerHTML = `Spoken Text: <span style="color: ${sentimentColor};">${transcript}</span>`;
+        document.getElementById('sentimentAnalysis').innerHTML = `Sentiment: <span style="color: ${sentimentColor};">${sentimentLabel}</span> ${data.emoji}`;
+      })
+      .catch(() => {
+        document.getElementById('sentimentAnalysis').textContent = "Sentiment analysis failed.";
+        document.getElementById('transcript').textContent = transcript;
+      });
+    }
+  </script>
+</body>
+</html>

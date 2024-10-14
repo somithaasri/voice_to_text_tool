@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select Feature</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #1e3c72, #2a69ac); /* Blue gradient background */
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      color: orange;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .menu button {
+      background-color: orange;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: background-color 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px; /* Space between icon and text */
+    }
+
+    .menu button:hover {
+      background-color: darkorange;
+    }
+
+    a {
+      text-decoration: none;
+      color: white;
+    }
+
+    /* Make the buttons adjust to smaller screens */
+    @media (max-width: 600px) {
+      .menu button {
+        padding: 10px 20px;
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Choose a Feature</h1>
+  <div class="menu">
+    <a href="translation.html"><button aria-label="Translation">
+      <span>🌐</span> Translation
+    </button></a>
+
+    <a href="sentiment.html"><button aria-label="Sentiment Analysis">
+      <span>😊</span> Sentiment Analysis
+    </button></a>
+
+    <a href="audio-upload.html"><button aria-label="Audio Upload">
+      <span>🎤</span> Audio Transcription
+    </button></a>
+  </div>
+</body>
+</html>
